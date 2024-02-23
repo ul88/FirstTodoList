@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="${userId} +'님 환영합니다.'"></p>
+
+    <form action="add-todo" th:object="${todoDto}" method="post">
+        <input type="text" th:field="*{content}" placeholder="할 일을 입력해주세요">
+        <input type="submit" value="확인">
+    </form>
+
+    <div th:each="data : ${todoList}">
+        <p th:text="${data.content}"></p>
+    </div>
+
+
+</body>
+</html>
