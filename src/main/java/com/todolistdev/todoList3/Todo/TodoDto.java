@@ -2,7 +2,7 @@ package com.todolistdev.todoList3.Todo;
 
 public class TodoDto {
     private Long id;
-    private String name;
+    private String userId;
     private String content;
     private boolean done;
 
@@ -12,7 +12,7 @@ public class TodoDto {
 
     public TodoDto(Long id, String name, String content, boolean done) {
         this.id = id;
-        this.name = name;
+        this.userId = name;
         this.content = content;
         this.done = done;
     }
@@ -26,11 +26,11 @@ public class TodoDto {
     }
 
     public String getName() {
-        return name;
+        return userId;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.userId = name;
     }
 
     public String getContent() {

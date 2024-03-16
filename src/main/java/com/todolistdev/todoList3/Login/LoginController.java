@@ -26,14 +26,29 @@ public class LoginController {
     @PostMapping("login-check")
     public String checkLogin(@RequestParam String userId,
                              @RequestParam String userPw,
-                             RedirectAttributes re){
+                             RedirectAttributes re) {
 
-        if(loginService.checkLogin(userId,userPw)) {
+        if (loginService.checkLogin(userId, userPw)) {
 
-            re.addAttribute("userId",userId);
+            re.addAttribute("userId", userId);
             return "redirect:/todo";
         }
         return "redirect:/";
-
     }
+
+    @PostMapping("sign-up-page")
+    public String gotoSignUpPage(Model model){
+        model.addAttribute("loginDto", new LoginDto());
+        return "signUpPage";
+    }
+
+    @PostMapping("sign-up-page/sign-up")
+    public String signUp(@RequestParam String userId,
+                         @RequestParam String userPw){
+        System.out.println("1: "+userId +" "+userPw);
+        loginService.signUp(userId,userPw);
+        System.out.println("2: "+userId +" "+userPw);
+        return "redirect:/";
+    }
+
 }

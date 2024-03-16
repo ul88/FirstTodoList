@@ -1,15 +1,14 @@
 package com.todolistdev.todoList3.Todo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
+@Slf4j
 public class TodoController {
 
     private final TodoService todoService;
@@ -27,10 +26,24 @@ public class TodoController {
 
     }
 
-    @PostMapping("add-todo")
-    public String add(@RequestParam String content,
-                      Model model){
+    @GetMapping("/todo/add-todo")
+    public String add(@RequestParam String content){
         todoService.addTodo(content);
+
         return "redirect:/todo";
     }
+
+    @PostMapping("/update-todo/{id}")
+    public String update(@PathVariable Long id){
+        todoService.updateTodo(id);
+        return "redirect:/todo";
+    }
+
+    @PostMapping("/delete-todo/{id}")
+    public String delete(@PathVariable Long id){
+        System.out.println(id);
+        todoService.deleteTodo(id);
+        return "redirect:/todo";
+    }
+
 }

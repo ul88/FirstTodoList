@@ -7,13 +7,37 @@
 <body>
     <p th:text="${userId} +'님 환영합니다.'"></p>
 
-    <form action="add-todo" th:object="${todoDto}" method="post">
+    <form th:action="@{/todo/add-todo}" th:object="${todoDto}" method="get">
         <input type="text" th:field="*{content}" placeholder="할 일을 입력해주세요">
         <input type="submit" value="확인">
     </form>
-
-    <div th:each="data : ${todoList}">
-        <p th:text="${data.content}"></p>
+    <hr>
+    <h2>해야할 일</h2>
+    <br>
+    <div th:each="todo : ${todoList}">
+        <div th:if="${todo.done == false}">
+            <span th:text="${todo.content}"></span>
+            <form th:action="@{/update-todo/{id} (id=${todo.id})}" method="post">
+                <input type="submit" value="추가">
+            </form>
+            <form th:action="@{/delete-todo/{id} (id=${todo.id})}" method="post">
+                <input type="submit" value="삭제">
+            </form>
+        </div>
+    </div>
+    <hr>
+    <h2>한 일</h2>
+    <br>
+    <div th:each="todo : ${todoList}">
+        <div th:if="${todo.done == true}">
+            <span th:text="${todo.content}"></span>
+            <form th:action="@{/update-todo/{id} (id=${todo.id})}" method="post">
+                <input type="submit" value="추가">
+            </form>
+            <form th:action="@{/delete-todo/{id} (id=${todo.id})}" method="post">
+                <input type="submit" value="삭제">
+            </form>
+        </div>
     </div>
 
 
