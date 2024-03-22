@@ -1,5 +1,6 @@
 package com.todolistdev.todoList3.Todo;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,30 +10,42 @@ import java.util.stream.Stream;
 
 @Service
 public class TodoService {
-    private List<TodoDto> todoList = new ArrayList<>();
-    private Long id = 0L;
+    private final TodoBoardRepository todoBoardRepository;
 
-    public void addTodo(String content){
-        todoList.add(new TodoDto(id++,"admin",content,false));
+    public TodoService(TodoBoardRepository todoBoardRepository) {
+        this.todoBoardRepository = todoBoardRepository;
     }
 
-    public List<TodoDto> readAll() {
+    public List<TodoDto> readAll(String userId) {
+        List<TodoBoard> todoBoardList = todoBoardRepository.findAll();
+        List<TodoDto> todoList = new ArrayList<>();
+
+        for(TodoBoard todoBoard : todoBoardList){
+            if(todoBoard.getUserId().equals(userId)){
+                todoList.add(new TodoDto(todoBoard.getId(), todoBoard.getUserId(), todoBoard.getContent(), todoBoard.getDone()));
+            }
+        }
         return todoList;
     }
 
+    public void addTodo(String userId, String content){
+        todoBoardRepository.save(TodoBoard.builder()
+                        .userId(userId)
+                        .content(content)
+                        .done(false)
+                        .build());
+    }
+
+    @Transactional
     public void updateTodo(Long id){
-        todoList.stream().
-                filter(s -> s.getId() == id)
-                .collect(Collectors.toList())
-                .forEach(s -> s.setDone(!s.isDone()) );
+        TodoBoard todoBoard = todoBoardRepository.findById(id).orElse(null);
+        todoBoard.setDone(!todoBoard.getDone());
+        todoBoardRepository.save(todoBoard);
     }
     public void deleteTodo(Long id) {
-        System.out.println(id);
-        todoList.stream().
-                filter(s -> s.getId() == id)
-                .collect(Collectors.toList())
-                .forEach(s -> { todoList.remove(s); } );
-
-        todoList.stream().forEach(s->System.out.println(s.getId() + " " + s.getContent()));
+        TodoBoard todoBoard = todoBoardRepository.findById(id).orElse(null);
+        if(todoBoard != null){
+            todoBoardRepository.delete(todoBoard);
+        }
     }
 }

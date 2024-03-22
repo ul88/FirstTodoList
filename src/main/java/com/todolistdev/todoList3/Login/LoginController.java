@@ -31,7 +31,7 @@ public class LoginController {
         if (loginService.checkLogin(userId, userPw)) {
 
             re.addAttribute("userId", userId);
-            return "redirect:/todo";
+            return "redirect:/todo/{userId}";
         }
         return "redirect:/";
     }

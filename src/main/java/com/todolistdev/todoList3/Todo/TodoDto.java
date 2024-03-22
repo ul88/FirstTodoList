@@ -37,6 +37,9 @@ public class TodoDto {
         return content;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
     public void setContent(String content) {
         this.content = content;
     }

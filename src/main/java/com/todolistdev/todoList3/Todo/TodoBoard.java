@@ -1,23 +1,25 @@
-package com.todolistdev.todoList3.Login;
+package com.todolistdev.todoList3.Todo;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 
-@Getter
 @Entity
 @Builder
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="loginTable")
-public class Board implements Serializable {
+@Table(name="todoTable")
+public class TodoBoard implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String userId;
     @Column
-    private String userPw;
-
+    private String content;
+    @Column
+    private Boolean done;
 }

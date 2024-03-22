@@ -17,33 +17,44 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @RequestMapping("todo")
-    public String home(Model model){
-//        model.addAttribute("userId",userId);
+    @RequestMapping("/todo/{userId}")
+    public String home(Model model,
+                       @PathVariable("userId") String userId){
+        model.addAttribute("userId",userId);
         model.addAttribute("todoDto", new TodoDto());
-        model.addAttribute("todoList",todoService.readAll());
+        model.addAttribute("todoList",todoService.readAll(userId));
         return "todoPage";
-
     }
 
-    @GetMapping("/todo/add-todo")
-    public String add(@RequestParam String content){
-        todoService.addTodo(content);
+    @RequestMapping("/todo/{userId}/add-todo")
+    public String add(@PathVariable String userId,
+                      @RequestParam String content,
+                      Model model){
 
-        return "redirect:/todo";
+        model.addAttribute("userId",userId);
+        todoService.addTodo(userId, content);
+
+        return "redirect:/todo/{userId}";
     }
 
-    @PostMapping("/update-todo/{id}")
-    public String update(@PathVariable Long id){
+    @PostMapping("/todo/{userId}/update-todo/{id}")
+    public String update(@PathVariable String userId,
+                         @PathVariable Long id,
+                         Model model){
+        model.addAttribute("userId", userId);
         todoService.updateTodo(id);
-        return "redirect:/todo";
+
+        return "redirect:/todo/{userId}";
     }
 
-    @PostMapping("/delete-todo/{id}")
-    public String delete(@PathVariable Long id){
-        System.out.println(id);
+    @PostMapping("/todo/{userId}/delete-todo/{id}")
+    public String delete(@PathVariable String userId,
+                         @PathVariable Long id,
+                         Model model){
+        System.out.println("id: "+id+" userId: "+userId);
+        model.addAttribute("userId",userId);
         todoService.deleteTodo(id);
-        return "redirect:/todo";
+        return "redirect:/todo/{userId}";
     }
 
 }
