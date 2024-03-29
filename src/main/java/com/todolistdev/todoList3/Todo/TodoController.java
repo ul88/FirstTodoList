@@ -21,7 +21,7 @@ public class TodoController {
     public String home(Model model,
                        @PathVariable("userId") String userId){
         model.addAttribute("userId",userId);
-        model.addAttribute("todoDto", new TodoDto());
+        model.addAttribute("contentDto", new ContentDto());
         model.addAttribute("todoList",todoService.readAll(userId));
         return "todoPage";
     }
@@ -51,7 +51,7 @@ public class TodoController {
     public String delete(@PathVariable String userId,
                          @PathVariable Long id,
                          Model model){
-        System.out.println("id: "+id+" userId: "+userId);
+        log.info("{} {}",userId,id);
         model.addAttribute("userId",userId);
         todoService.deleteTodo(id);
         return "redirect:/todo/{userId}";

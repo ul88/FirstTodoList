@@ -11,41 +11,59 @@ import java.util.stream.Stream;
 @Service
 public class TodoService {
     private final TodoBoardRepository todoBoardRepository;
-
-    public TodoService(TodoBoardRepository todoBoardRepository) {
+    private final ContentRepository contentRepository;
+    public TodoService(TodoBoardRepository todoBoardRepository, ContentRepository contentRepository) {
         this.todoBoardRepository = todoBoardRepository;
+        this.contentRepository = contentRepository;
     }
 
-    public List<TodoDto> readAll(String userId) {
-        List<TodoBoard> todoBoardList = todoBoardRepository.findByUserId(userId);
-        List<TodoDto> todoList = new ArrayList<>();
-        for(TodoBoard iter : todoBoardList){
-            todoList.add(TodoDto.toDto(iter));
+    public List<ContentDto> readAll(String userId) {
+        TodoBoard todoBoard = todoBoardRepository.findByUserId(userId);
+        if(todoBoard == null){
+            return null;
         }
-        return todoList;
+        List<ContentDto> contentDtoList = new ArrayList<>();
+        for(ContentBoard iter : todoBoard.contentBoardList){
+            contentDtoList.add(ContentDto.toDto(iter));
+        }
+        return contentDtoList;
     }
 
     public void addTodo(String userId, String content){
-        todoBoardRepository.save(TodoBoard.builder()
-                        .userId(userId)
-                        .content(content)
-                        .done(false)
-                        .build());
+        TodoBoard todoBoard;
+        if(todoBoardRepository.findByUserId(userId) == null){
+            todoBoard = TodoBoard.builder()
+                    .userId(userId)
+                    .contentBoardList(new ArrayList<>())
+                    .build();
+            todoBoardRepository.save(todoBoard);
+        }else{
+            todoBoard = todoBoardRepository.findByUserId(userId);
+        }
+
+
+        ContentBoard contentBoard = ContentBoard.builder()
+                .todo(todoBoard)
+                .content(content)
+                .done(false)
+                .build();
+
+        contentRepository.save(contentBoard);
     }
 
     @Transactional
     public void updateTodo(Long id){
-        TodoBoard todoBoard = todoBoardRepository.findById(id).orElse(null);
-        if(todoBoard != null){
-            todoBoardRepository.save(todoBoard.toBuilder()
-                            .done(!todoBoard.getDone())
-                            .build());
+        ContentBoard contentBoard = contentRepository.findById(id).orElse(null);
+        if(contentBoard != null){
+            contentRepository.save(contentBoard.toBuilder()
+                            .done(!contentBoard.getDone())
+                    .build());
         }
     }
     public void deleteTodo(Long id) {
-        TodoBoard todoBoard = todoBoardRepository.findById(id).orElse(null);
-        if(todoBoard != null){
-            todoBoardRepository.delete(todoBoard);
+        ContentBoard contentBoard = contentRepository.findById(id).orElse(null);
+        if(contentBoard != null){
+            contentRepository.delete(contentBoard);
         }
     }
 }

@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Builder(toBuilder = true)
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +17,6 @@ public class TodoBoard implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userId;
-    private String content;
-    private Boolean done;
+    @OneToMany(mappedBy = "todo")
+    List<ContentBoard> contentBoardList;
 }

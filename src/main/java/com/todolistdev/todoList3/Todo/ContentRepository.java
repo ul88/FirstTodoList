@@ -3,9 +3,7 @@ package com.todolistdev.todoList3.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface TodoBoardRepository extends JpaRepository<TodoBoard, Long> {
-    TodoBoard findByUserId(String userId);
+public interface ContentRepository extends JpaRepository<ContentBoard, Long> {
+
 }

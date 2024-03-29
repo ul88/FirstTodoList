@@ -7,7 +7,7 @@
 <body>
     <p th:text="${userId} +'님 환영합니다.'"></p>
 
-    <form th:action="@{/todo/{userId}/add-todo(userId=${userId})}" th:object="${todoDto}" method="post">
+    <form th:action="@{/todo/{userId}/add-todo(userId=${userId})}" th:object="${contentDto}" method="post">
         <input type="text" th:field="*{content}" placeholder="할 일을 입력해주세요">
         <input type="submit" value="확인">
     </form>
