@@ -6,8 +6,7 @@ import lombok.*;
 import java.io.Serializable;
 
 @Entity
-@Builder
-@Setter
+@Builder(toBuilder = true)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,10 +15,7 @@ public class TodoBoard implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
     private String userId;
-    @Column
     private String content;
-    @Column
     private Boolean done;
 }

@@ -17,13 +17,10 @@ public class TodoService {
     }
 
     public List<TodoDto> readAll(String userId) {
-        List<TodoBoard> todoBoardList = todoBoardRepository.findAll();
+        List<TodoBoard> todoBoardList = todoBoardRepository.findByUserId(userId);
         List<TodoDto> todoList = new ArrayList<>();
-
-        for(TodoBoard todoBoard : todoBoardList){
-            if(todoBoard.getUserId().equals(userId)){
-                todoList.add(new TodoDto(todoBoard.getId(), todoBoard.getUserId(), todoBoard.getContent(), todoBoard.getDone()));
-            }
+        for(TodoBoard iter : todoBoardList){
+            todoList.add(TodoDto.toDto(iter));
         }
         return todoList;
     }
@@ -39,8 +36,11 @@ public class TodoService {
     @Transactional
     public void updateTodo(Long id){
         TodoBoard todoBoard = todoBoardRepository.findById(id).orElse(null);
-        todoBoard.setDone(!todoBoard.getDone());
-        todoBoardRepository.save(todoBoard);
+        if(todoBoard != null){
+            todoBoardRepository.save(todoBoard.toBuilder()
+                            .done(!todoBoard.getDone())
+                            .build());
+        }
     }
     public void deleteTodo(Long id) {
         TodoBoard todoBoard = todoBoardRepository.findById(id).orElse(null);
