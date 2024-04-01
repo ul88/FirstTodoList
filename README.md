@@ -29,6 +29,7 @@
 |@PathVariable|http://localhost:8080/hello/1과 같은 식으로 넘어오는 파라미터를 받을 때 사용한다.|
 |@Slf4j|log관련 함수들을 추가해주는 어노테이션이다.|
 
+# 패키지
 
 ## Login 패키지
  ### [Board](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Login/Board.java)
