@@ -24,50 +24,58 @@
 
 
 ## Login 패키지
- ### Board
+ ### [Board](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Login/Board.java)
   id를 기본키로 지정해주고, 아이디를 저장할 userId와 비밀번호를 저장할 userPw를 만든다.
   
- ### BoardRepository
+ ### [BoardRepository](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Login/BoardRepository.java)
   JpaRepository를 상속받는 repository로 데이터베이스에서 해당 되는 userId가 있는 행을 반환하는 findByUserId를 만들었다.
   
- ### LoginDto
+ ### [LoginDto](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Login/LoginDto.java)
   Dto란, 프로세스 간에 데이터를 전달하는 객체를 말한다.
   데이터 베이스에 id와 userId, userPw가 있으므로, 이 데이터들을 전달해야하므로
   LoginDto도 마찬가지로 id, userId, userPw 멤버 변수를 선언함.
   
- ### LoginController
+ ### [LoginController](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Login/LoginController.java)
   1. localhost:8080 url을 전송하면 index.html이 아닌 로그인 페이지로 강제로 넘겨준다.
   2. localhost:8080/sign-up-page url을 전송하면 회원가입 페이지로 넘어간다.
   3. localhost:8080/sign-up-page/sigh-up url을 전송하면 html form에서 입력한 값들을 전달받아, 데이터 베이스에 값을 추가한다.
   4. localhost:8080/login-check url을 전송하면 html form에서 입력한 값들을 전달받아, 데이터 베이스에 있는 값들과 비교하고 맞다면, 투두리스트 페이지로 넘어가고, 아니라면 다시 기본 페이지로 보낸다.
 
- ### LoginService
+ ### [LoginService](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Login/LoginService.java)
   회원가입하는 메소드와 로그인하는 메소드가 존재한다.
 
 ## Todo 패키지
- ### ContentBoard
+ ### [ContentBoard](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/ContentBoard.java)
   todoTable과 ManyToOne 관계이므로,
   기본키인 id와 할 일을 담은 content, 할 일 여부를 담은 done, todoTable의 기본키를 담을 외래키인 todo를 만든다.
  
- ### ContentDto
+ ### [ContentDto](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/ContentDto.java)
   ContentBoard의 값들을 객체간 전송시키기 위해 똑같이 담는 Dto를 만듦
  
- ### ContentRepository
+ ### [ContentRepository](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/ContentRepository.java)
   JPA와 연결했다.
   
- ### TodoBoard
+ ### [TodoBoard](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/TodoBoard.java)
   contentBoard와 OneToMany 관계이므로,
   기본키인 id와 유저의 아이디를 담은 userId, 할 일을 담을 리스트인 contentBoardList를 만든다.
+
+ ### [TodoDto](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/TodoDto.java)
+  TodoBoard의 값들을 객체간 전송시키기 위해 똑같은 것을 담는 Dto를 만듦
  
- ### TodoBoardRepository
+ ### [TodoBoardRepository](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/TodoBoardRepository.java)
   JPA와 연결한 후, 데이터 베이스에서 해당 되는 userId가 있는 행을 반환하는 findByUserId를 만든다. 
  
- ### TodoController
-  
+ ### [TodoController](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/TodoController.java)
+  1. localhost:8080/todo/{userId} url을 전송하면 userId값과 데이터 베이스에 있는 값들을 html로 전송시킨다.
+  2. localhost:8080/todo/{userId}/add-todo url을 전송하면 html form에서 입력받은 content값을 userId에 해당하는 데이터 베이스에 저장한다.
+  3. localhost:8080/todo/{userId}/update-todo/{id} url을 전송하면 html form에서 클릭한 버튼에 해당하는 id를 전송해 그 id를 가지고 있는 행으로 접근 후, done값을 갱신해준다.
+  4. localhost:8080/todo/{userId}/delete-todo/{id} url을 전송하면 html form에서 클릭한 버튼에 해당하는 id를 전송해 그 id를 가지고 있는 행으로 접근 후, 데이터 베이스에서 삭제해준다.
  
- ### TodoService
- 
- ### TodoDto
+ ### [TodoService](https://github.com/ul88/FirstTodoList/blob/main/src/main/java/com/todolistdev/todoList3/Todo/TodoService.java)
+  1. readAll(String userId) : userId에 해당하는 데이터 베이스 값을 전부 가져와서 리스트 형식으로 반환해준다.
+  2. addTodo(String userId, String content) : userId에 해당하는 데이터 베이스에 content값을 새롭게 데이터베이스에 추가해준다.
+  3. upadateTodo(Long id) : 데이터베이스에서 id값에 해당하는 행을 찾아 done의 값을 바꿔준다.
+  4. deleteTodo(Long id) : 데이터베이스에서 id값에 해당하는 행을 찾아 삭제해준다.
 
 ## 데이터베이스 관계
 1. todo와 content와의 관계는 양방향 관계로
